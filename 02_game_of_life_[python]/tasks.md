@@ -1,0 +1,79 @@
+# Appliquer
+
+Votre objectif : implémenter un jeu de la vie en Python, exécuté dans le shell.
+
+Pour cela, la librairie d’affichage curses sera utilisée. Nous avons préparé un script qui s’occupe de l’affichage et du rafraichissement de l’écran. Il ne vous reste qu’à compléter la fonction “next_state()” !
+
+Script python à compléter :
+
+import curses
+
+# Fonction à modifier 
+
+def next_state (state):
+    new_state = state
+    return new_state
+
+# Fonction principale, que vous n'avez pas à modifier ;
+# stdscr est l'objet qui représente l'écran dans curses
+
+def main (stdscr):
+    # On désactive le curseur de texte dans la fenêtre de curses
+    curses.curs_set(False) 
+    
+    # On lit la grille initiale, modifiable dans cells.txt
+    text_file = open("cells.txt", "r")
+    state = text_file.read().splitlines()
+
+    # Boucle de jeu :
+    # Tant que l'input utilisateur est différent de "q", on reste dans le jeu
+    key = " "
+    while key != "q":
+        # On vide l'écran
+        stdscr.clear()
+
+        # Préparation de l'affichage ligne par ligne
+        for i in range(len(state)):
+            for j in range(len(state[i])):
+                if state[i][j] == "O":
+                    stdscr.addstr(i, j, "O") # attention, curses met y avant x
+
+        # Fonction qui affiche ce qu'on a préparé
+        stdscr.refresh()
+        
+        # La fonction next_state() retourne le prochain état du jeu de la vie
+        state = next_state(state)
+
+        # Fonction qui attend un input utilisateur
+        key = stdscr.getkey()
+
+# Curses s'exécute au sein d'un wrapper, afin de ne pas perturber l'affichage du
+# shell lorsqu'on ferme le programme
+
+curses.wrapper(main)
+Fichier “cells.txt”, représentant l’état initial du jeu, à joindre :
+
+................................................................
+................................................................
+................................................OOO.............
+...............................................OOO..............
+......O.........................................................
+......O.........................................................
+......O.....OO..............O...................................
+............O................O..................................
+...............O...........OOO..................................
+..............OO................................................
+................................................................
+................................................................
+................................................................
+................................................................
+.............OOOO..............................OOO..............
+............O...O..............................O................
+................O...............................O...............
+............O..O................................................
+.........OOO....................................................
+................................................................
+................................................................
+.OOO............................................................
+...O............................................................
+..O.............................................................
